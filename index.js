@@ -1,7 +1,7 @@
 var express = require('express'); 
 var app = express();
 
-app.set("port", process.env.PORT || 4000); // 서버 포트 설정.  
+app.set("port", process.env.PORT || 4200); // 서버 포트 설정.  
 app.use(express.static(__dirname + '/'))
 //정적 파일 제공 미들웨어asa
 //npm으로 설치할 필요 x. 이미 내장
@@ -12,6 +12,21 @@ app.engine('html', require('ejs').renderFile);
 app.set("views", "./views");
 app.set("view engine", "html");
 
+//이건 걍 웹페이지 전환 코드 
+app.get('/test',function(req,res){
+    console.log('tets~s...');
+    res.render('test')
+});
+
+//id 보내는 코드 .html에서 '보내기' => /send_email POST
+app.use(express.json()); //req로 데이터 받을때. 
+app.use(express.urlencoded({extended: false})); //마찬가지
+
+app.post('/send_code', function(req,res){
+    console.log("code :", req.body.code);   //post로 받은건 req.body에 저장!                                                                 
+    res.send("<h1>WELCOME<h1>");
+  });
+///////////////////
 
 
 app.get('/',function(req,res){
